@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AuthRequest;
-use App\Mail\SendEmail;
-use App\Models\User;
+use App\Http\Requests\Auth\AuthRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\SendMailRequest;
+use App\Http\Requests\Auth\VerificationRequest;
 use App\Services\AuthService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -24,7 +20,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $result = $this->authService->loginUser($data['email'], $data['password']);
+        $result = $this->authService->loginUser($data['email'], $data['password'], $data['remember'] ?? null);
 
         if ($result === true) {
             return redirect()->route('dashboard');
@@ -41,46 +37,53 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    public function sendEmail(Request $request)
+    public function sendEmail(SendMailRequest $request)
     {
-        $verificationCode = random_int(1000, 9999);
+        $data = $request->all();
 
-        DB::table('password_resets')->updateOrInsert(
-            ['email' => $request->email],
-            [
-                'verification_code' => $verificationCode,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'expired_at' => Carbon::now()->addMinute(15),
+        $emailSent = $this->authService->sendVerificationEmail($data['email']);
 
+        if ($emailSent) {
+            return redirect()->route('verification');
+        } else {
+            return back()->withErrors([
+                'fail' => 'User not found'
             ]);
-        Session::put('email', $request->email);
+        }
 
-        Mail::to('ayxan.alizade89@gmail.com')->send(new SendEmail($verificationCode));
-
-        return redirect()->route('verification');
     }
 
 
-    public function verify(Request $request)
+    public function verify(VerificationRequest $request)
     {
+        $data = $request->all();
         $email = Session::get('email');
 
-        $data = DB::table('password_resets')->where('email', $email)
-            ->where('verification_code', $request->verification_code)
-            ->first();
+        $result = $this->authService->verifyCode($email, $data['verification_code']);
 
-        if ($data) {
+
+        if ($result['status']) {
             return redirect()->route('reset-password');
+        } else {
+            if ($result['expired']) {
+                return redirect()->route('forgot-password')->withErrors(['fail' => $result['message']]);
+            } else {
+                return back()->withErrors(['fail' => $result['message']]);
+            }
         }
-        return back()->withErrors(['fail' => 'Verification code does not correct']);
+
     }
 
-    public function reset(Request $request)
+    public function reset(ResetPasswordRequest $request)
     {
-        $user = User::where('email', Session::get('email'))->first();
-        $user->password = Hash::make($request->password);
-        $user->save();
-        return redirect()->route('login');
+        $data = $request->all();
+
+        $result = $this->authService->resetPassword($data['password']);
+
+        if ($result) {
+            return redirect()->route('login');
+        } else {
+            return back()->withErrors(['fail', 'Error']);
+        }
     }
 }

@@ -35,6 +35,22 @@ class UserService
 
     }
 
+    private function handleImageUpload($user, $file)
+    {
+        $fileExtension = $file->extension();
+        $fileName = $file->hashName();
+
+        $path = public_path('images/users');
+        $file->move($path, $fileName);
+
+        $media = Media::create([
+            'file_name' => $fileName,
+            'file_type' => $fileExtension
+        ]);
+        $user->fk_id_media = $media->id_media;
+        $user->save();
+    }
+
     public function updateUser(
         int    $id,
         string $firstName,
@@ -57,7 +73,7 @@ class UserService
         $user->username = $username;
         $user->email = $email;
         if ($password) {
-            $user->password = $password;
+            $user->password = Hash::make($password);
         }
         $user->is_admin = $isAdmin;
 
@@ -74,6 +90,17 @@ class UserService
 
     }
 
+    private function deleteExistingImage($user)
+    {
+        if (!$user->fk_id_media == null) {
+            $filePath = ('images/users/') . $user->media->file_name;
+            if (file_exists($filePath)) {
+                unlink(public_path('images/users/') . $user->media->file_name);
+            }
+            $user->media()->update(['is_deleted' => 1, 'is_active' => 0]);
+            $user->fk_id_media = null;
+        }
+    }
 
     public function destroyUser($id)
     {
@@ -96,7 +123,6 @@ class UserService
 
     }
 
-
     public function updateUserStatus($request)
     {
         $request->validate([
@@ -112,35 +138,6 @@ class UserService
         Cache::forget('users');
         return $user;
 
-    }
-
-
-    private function handleImageUpload($user, $file)
-    {
-        $fileExtension = $file->extension();
-        $fileName = $file->hashName();
-
-        $path = public_path('images/users');
-        $file->move($path, $fileName);
-
-        $media = Media::create([
-            'file_name' => $fileName,
-            'file_type' => $fileExtension
-        ]);
-        $user->fk_id_media = $media->id_media;
-        $user->save();
-    }
-
-    private function deleteExistingImage($user)
-    {
-        if (!$user->fk_id_media == null) {
-            $filePath = ('images/users/') . $user->media->file_name;
-            if (file_exists($filePath)) {
-                unlink(public_path('images/users/') . $user->media->file_name);
-            }
-            $user->media()->update(['is_deleted' => 1, 'is_active' => 0]);
-            $user->fk_id_media = null;
-        }
     }
 
 

@@ -5,7 +5,8 @@
     <meta name="author" content="Kodinger">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>My Login Page &mdash; Bootstrap 4 Login Page Snippet</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{asset('css/login.css')}}">
 </head>
 <body class="my-login-page">
@@ -14,7 +15,7 @@
         <div class="row justify-content-md-center align-items-center h-100">
             <div class="card-wrapper">
                 <div class="brand">
-                    <img src="{{asset('images/logo.jpg')}}" alt="bootstrap 4 login page">
+                    <img src="{{asset('images/logo.webp')}}" alt="bootstrap 4 login page">
                 </div>
                 <div class="card fat">
                     <div class="card-body">
@@ -24,7 +25,8 @@
 
                             <div class="form-group">
                                 <label for="email">E-Mail Address</label>
-                                <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
+                                <input id="email" type="email" class="form-control" name="email" value="" required
+                                       autofocus>
                                 <div class="invalid-feedback">
                                     Email is invalid
                                 </div>
@@ -32,6 +34,20 @@
                                     By clicking "Reset Password" we will send a password reset link
                                 </div>
                             </div>
+
+
+                            @if($errors->any())
+                                <div class="alert alert-danger " style="font-size:14px;" role="alert">
+                                    <div>
+                                        <span class="fw-bold">Ensure that these requirements are met:</span>
+                                        <ul class="mt-2 mb-0">
+                                            @foreach($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endif
 
                             <div class="form-group m-0">
                                 <button type="submit" class="btn btn-primary btn-block">
@@ -49,7 +65,9 @@
     </div>
 </section>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 <script src="{{asset('js/login.js')}}"></script>
 </body>
 </html>

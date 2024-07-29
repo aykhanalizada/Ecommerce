@@ -14,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'loggedIn' => \App\Http\Middleware\LoggedIn::class,
             'authCheck' => \App\Http\Middleware\AuthCheck::class,
-            'adminCheck' => \App\Http\Middleware\AdminCheck::class
+            'adminCheck' => \App\Http\Middleware\AdminCheck::class,
+            'verifySession'=>\App\Http\Middleware\EnsureVerificationSession::class
         ]);
 
     })

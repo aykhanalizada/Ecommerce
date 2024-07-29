@@ -15,8 +15,8 @@
     <div class="container h-100">
         <div class="row justify-content-md-center h-100">
             <div class="card-wrapper">
-                <div class="brand">
-                    <img src="{{asset('images/logo.jpg')}}" alt="logo">
+                <div class="brand" style=" width:110px; height:110px">
+                    <img src="{{asset('images/logo.webp')}}" style="object-fit: contain; " alt="logo">
                 </div>
                 <div class="card fat">
                     <div class="card-body">

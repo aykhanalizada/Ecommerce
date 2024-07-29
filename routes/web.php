@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProductController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('authCheck')->group(function () {
 
@@ -54,9 +54,12 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::view('forgot-password', 'auth.forgot-password')->name('forgot-password');
 Route::post('forgot-password', [AuthController::class, 'sendEmail'])->name('send-email');
 
-Route::view('verification','auth.verification')->name('verification');
-Route::post('verify', [AuthController::class, 'verify'])->name('verify');
 
+Route::middleware('verifySession')->group(function () {
 
-Route::view('reset-password','auth.reset-password')->name('reset-password');
-Route::post('reset', [AuthController::class, 'reset'])->name('reset');
+    Route::view('verification', 'auth.verification')->name('verification');
+    Route::post('verify', [AuthController::class, 'verify'])->name('verify');
+
+    Route::view('reset-password', 'auth.reset-password')->name('reset-password');
+    Route::post('reset', [AuthController::class, 'reset'])->name('reset');
+});
