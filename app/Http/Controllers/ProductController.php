@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Models\Product;
+use App\Http\Requests\Product\UpdateProductStatusRequest;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -75,9 +75,11 @@ class ProductController extends Controller
         }
     }
 
-    public function updateProductStatus(Request $request)
+    public function updateProductStatus(UpdateProductStatusRequest $request)
     {
-        $this->productService->updateProductStatus($request);
+        $data = $request->validated();
+
+        $this->productService->updateProductStatus($data['id_product'], $data['is_active']);
 
         return response()->json([
             'message' => 'Successfully updated'

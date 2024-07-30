@@ -17,7 +17,11 @@ class AuthService
         $user = User::where('email', $email)->first();
 
         if ($remember == 'on') {
-            Cookie::queue(Cookie::make('user', $user, 60));
+
+            $rememberToken = md5(rand(1, 10) . microtime());
+            $user->remember_token = $rememberToken;
+            $user->save();
+            Cookie::queue(Cookie::make('remember_token', $rememberToken, 60 * 24));
         }
 
         if ($user) {
@@ -37,6 +41,7 @@ class AuthService
     public function logoutUser()
     {
         Session::forget('userId');
+        Cookie::queue(Cookie::forget('remember_token'));
         return true;
     }
 

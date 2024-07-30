@@ -18,12 +18,13 @@ class User extends Model
         'username',
         'email',
         'password',
-        'is_admin'
+        'is_admin',
+        'remember_token'
     ];
 
     public function media()
     {
-        return $this->belongsTo(Media::class, 'fk_id_media','id_media');
+        return $this->belongsTo(Media::class, 'fk_id_media', 'id_media');
     }
 
 }

@@ -39,7 +39,7 @@ class AuthController extends Controller
 
     public function sendEmail(SendMailRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         $emailSent = $this->authService->sendVerificationEmail($data['email']);
 
@@ -56,7 +56,7 @@ class AuthController extends Controller
 
     public function verify(VerificationRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $email = Session::get('email');
 
         $result = $this->authService->verifyCode($email, $data['verification_code']);
@@ -76,7 +76,7 @@ class AuthController extends Controller
 
     public function reset(ResetPasswordRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         $result = $this->authService->resetPassword($data['password']);
 

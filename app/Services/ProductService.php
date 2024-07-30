@@ -99,6 +99,23 @@ class ProductService
 
     }
 
+    private function handleImageUpload($product, $file, $isMain)
+    {
+        $fileExtension = $file->extension();
+        $fileName = $file->hashName();
+
+        $media = Media::create([
+            'file_name' => $fileName,
+            'file_type' => $fileExtension
+        ]);
+        $product->images()->attach($media->id_media, ['is_main' => $isMain]);
+        $product->save();
+
+
+        $path = public_path('images/products');
+        $file->move($path, $fileName);
+    }
+
     public function updateProduct(
         int    $id,
         string $title,
@@ -153,6 +170,18 @@ class ProductService
 
     }
 
+    private function deleteExistingImage($product)
+    {
+        foreach ($product->images as $image) {
+
+            $filePath = ('images/products/') . $image->file_name;
+            if (file_exists($filePath)) {
+                unlink(public_path('images/products/') . $image->file_name);
+
+                $product->images()->detach();
+            }
+        }
+    }
 
     public function destroyProduct($id)
     {
@@ -174,60 +203,21 @@ class ProductService
 
     }
 
-
-    public function updateProductStatus($request)
+    public function updateProductStatus(int $productId, bool $isActive)
     {
 
-        $data = $request->validate([
-            'is_active' => 'required','boolean',
-            "id_product" => 'required'
-        ]);
 
-
-        $product = Product::find($data['id_product']);
+        $product = Product::find($productId);
 
         if (!$product) {
-            throw new \Exception("Product with ID {$data['id_product']} not found.");
+            throw new \Exception("Product with ID {$productId} not found.");
         }
-        $product->is_active = $data['is_active'];
+        $product->is_active = $isActive;
         $product->save();
 
         return $product;
 
     }
-
-
-    private function handleImageUpload($product, $file, $isMain)
-    {
-        $fileExtension = $file->extension();
-        $fileName = $file->hashName();
-
-        $media = Media::create([
-            'file_name' => $fileName,
-            'file_type' => $fileExtension
-        ]);
-        $product->images()->attach($media->id_media, ['is_main' => $isMain]);
-        $product->save();
-
-
-        $path = public_path('images/products');
-        $file->move($path, $fileName);
-    }
-
-
-    private function deleteExistingImage($product)
-    {
-        foreach ($product->images as $image) {
-
-            $filePath = ('images/products/') . $image->file_name;
-            if (file_exists($filePath)) {
-                unlink(public_path('images/products/') . $image->file_name);
-
-                $product->images()->detach();
-            }
-        }
-    }
-
 
     public function searchProduct($query)
     {

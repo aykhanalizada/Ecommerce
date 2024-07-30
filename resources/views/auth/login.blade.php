@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Kodinger">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>My Login Page</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/login.css">
@@ -15,7 +15,7 @@
     <div class="container h-100">
         <div class="row justify-content-md-center h-100">
             <div class="card-wrapper">
-                <div class="brand" style=" width:110px; height:110px">
+                <div class="brand" >
                     <img src="{{asset('images/logo.webp')}}" style="object-fit: contain; " alt="logo">
                 </div>
                 <div class="card fat">

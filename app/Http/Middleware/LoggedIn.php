@@ -18,7 +18,7 @@ class LoggedIn
     {
         if(Session::has('userId') && $request->url() == route('login') )
         {
-            return back();
+            return redirect()->route('dashboard');
         }
 
         return $next($request);

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Requests\User\UpdateUserStatusRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -76,9 +76,11 @@ class UserController extends Controller
         }
     }
 
-    public function updateUserStatus(Request $request)
+    public function updateUserStatus(UpdateUserStatusRequest $request)
     {
-        $this->userService->updateUserStatus($request);
+        $data = $request->validated();
+
+        $this->userService->updateUserStatus($data['id_user'], $data['is_active']);
 
         return response()->json([
             'message' => 'Successfully updated'

@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('password');
             $table->unsignedInteger('fk_id_media')->nullable();
             $table->boolean('is_admin')->default(0)->nullable();
+            $table->rememberToken()->nullable();
             $table->boolean('is_active')->default(1)->nullable();
             $table->boolean('is_deleted')->default(0)->nullable();
 

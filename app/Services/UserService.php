@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Media;
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -123,19 +122,14 @@ class UserService
 
     }
 
-    public function updateUserStatus($request)
+    public function updateUserStatus(int $userId, bool $isActive)
     {
-        $request->validate([
-            'is_active' => 'required|boolean',
-            "id_user" => 'required'
-        ]);
 
-        $user = User::find($request->id_user);
+        $user = User::find($userId);
 
-        $user->is_active = $request->is_active;
+        $user->is_active = $isActive;
         $user->save();
 
-        Cache::forget('users');
         return $user;
 
     }

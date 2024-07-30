@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Brand\StoreBrandRequest;
 use App\Http\Requests\Brand\UpdateBrandRequest;
+use App\Http\Requests\Brand\UpdateBrandStatusRequest;
 use App\Services\BrandService;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -61,9 +61,10 @@ class BrandController extends Controller
         }
     }
 
-    public function updateBrandStatus(Request $request)
+    public function updateBrandStatus(UpdateBrandStatusRequest $request)
     {
-        $this->brandService->updateBrandStatus($request);
+        $data = $request->validated();
+        $this->brandService->updateBrandStatus($data['id_brand'], $data['is_active']);
 
         return response()->json([
             'message' => 'Successfully updated'

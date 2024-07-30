@@ -44,7 +44,7 @@ Route::middleware('authCheck')->group(function () {
 });
 
 
-Route::middleware('loggedIn')->group(function () {
+Route::middleware(['rememberMe','loggedIn'])->group(function () {
     Route::view('/', 'auth.login')->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('user-login');
 });
