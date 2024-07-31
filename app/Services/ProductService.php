@@ -187,7 +187,6 @@ class ProductService
     {
         $product = Product::where('id_product', $id)->first();
 
-
         if ($product) {
             $product->is_deleted = 1;
             $product->is_active = 0;
@@ -205,8 +204,6 @@ class ProductService
 
     public function updateProductStatus(int $productId, bool $isActive)
     {
-
-
         $product = Product::find($productId);
 
         if (!$product) {

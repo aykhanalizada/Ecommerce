@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\Session;
 
 class AuthService
 {
-    public function loginUser(string $email, string $password, $remember = null)
+    public function loginUser(string $login, string $password, $remember = null)
     {
-        $user = User::where('email', $email)->first();
+        $user = User::where('email', $login)
+            ->orWhere('username',$login)
+            ->first();
 
         if ($remember == 'on') {
 

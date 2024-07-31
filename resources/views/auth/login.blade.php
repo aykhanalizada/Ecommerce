@@ -24,12 +24,10 @@
                         <form method="POST" action="{{route('user-login')}}" class="my-login-validation">
                             @csrf
                             <div class="form-group">
-                                <label for="email">E-Mail Address</label>
-                                <input id="email" type="email" class="form-control" name="email" value="" required
+                                <label for="login">E-Mail Address or Username</label>
+                                <input id="login" type="text" class="form-control" name="login" value="" required
                                        autofocus>
-                                <div class="invalid-feedback">
-                                    Email is invalid
-                                </div>
+
                             </div>
 
                             <div class="form-group">
@@ -40,9 +38,7 @@
                                 </label>
                                 <input id="password" type="password" class="form-control" name="password" required
                                        data-eye>
-                                <div class="invalid-feedback">
-                                    Password is required
-                                </div>
+
                             </div>
                             @if($errors->any())
                                 <div class="alert alert-danger " style="font-size:14px;" role="alert">

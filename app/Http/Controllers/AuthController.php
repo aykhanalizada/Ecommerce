@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $result = $this->authService->loginUser($data['email'], $data['password'], $data['remember'] ?? null);
+        $result = $this->authService->loginUser($data['login'], $data['password'], $data['remember'] ?? null);
 
         if ($result === true) {
             return redirect()->route('dashboard');
