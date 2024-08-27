@@ -44,7 +44,7 @@
                             <img src="{{  asset('images/users/' . $user->media->file_name  ) }}"
                                  class="img-thumbnail rounded-circle" style="width:50px;height:50px;" alt="">
                         @else
-                            <span><img src="{{asset('images/users/default-user.webp')}}"
+                            <span><img src="{{asset('images/default-user.webp')}}"
                                        class="img-thumbnail rounded-circle object-fit-cover"
                                        style="width:50px;height:50px;"></span>
                         @endif

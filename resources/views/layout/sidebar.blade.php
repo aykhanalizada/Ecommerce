@@ -11,12 +11,12 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                @if($userData->media)
+                @if($userData && $userData->media)
                     <img src="{{asset('images/users/' . $userData->media->file_name  ) }}"
                          class="img-circle elevation-2 object-fit-cover" style="width:40px; height: 40px; "
                          alt="User Image">
                 @else
-                    <img src="{{asset('images/users/default-user.webp')}}" class="img-circle elevation-2"
+                    <img src="{{asset('images/default-user.webp')}}" class="img-circle elevation-2"
                          alt="User Image">
                 @endif
 
@@ -79,7 +79,7 @@
                     </a>
                 </li>
 
-                @if($userData->is_admin==1)
+                @if($userData && $userData->is_admin==1)
                     <li>
                         <a href="{{route('user')}}"
                            class="nav-link {{Request::url()==route('user') ? "active" : ""}}">

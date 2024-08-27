@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('authCheck')->group(function () {
@@ -44,7 +46,7 @@ Route::middleware('authCheck')->group(function () {
 });
 
 
-Route::middleware(['rememberMe','loggedIn'])->group(function () {
+Route::middleware(['rememberMe', 'loggedIn'])->group(function () {
     Route::view('/', 'auth.login')->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('user-login');
 });
@@ -63,3 +65,8 @@ Route::middleware('verifySession')->group(function () {
     Route::view('reset-password', 'auth.reset-password')->name('reset-password');
     Route::post('reset', [AuthController::class, 'reset'])->name('reset');
 });
+
+Route::get('payment', [StripeController::class, 'index']);
+Route::post('checkout', [StripeController::class, 'test'])->name('checkout');
+Route::view('success', 'success')->name('success');
+
