@@ -43,6 +43,15 @@ Route::middleware('authCheck')->group(function () {
         Route::get('/users-search', [UserController::class, 'search'])->name('user-search');
         Route::get('/users-filter', [UserController::class, 'filter'])->name('user-filter');
     });
+
+    // Payment Logic
+    Route::get('payment', [StripeController::class, 'index']);
+    Route::post('checkout', [StripeController::class, 'test'])->name('checkout');
+    Route::view('success', 'success')->name('success');
+
+
+
+
 });
 
 
@@ -66,7 +75,4 @@ Route::middleware('verifySession')->group(function () {
     Route::post('reset', [AuthController::class, 'reset'])->name('reset');
 });
 
-Route::get('payment', [StripeController::class, 'index']);
-Route::post('checkout', [StripeController::class, 'test'])->name('checkout');
-Route::view('success', 'success')->name('success');
 
