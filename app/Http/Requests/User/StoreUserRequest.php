@@ -24,8 +24,8 @@ class StoreUserRequest extends FormRequest
         return [
             'firstName' => 'required',
             'lastName' => 'required',
-            'username' => 'required',
-            'email' => 'required',
+            'username' => 'required|unique:user',
+            'email' => 'required|unique:user',
             'password' => 'required',
             'file' => 'nullable|image|mimes:jpeg,jpg,png,gif',
             'is_admin' => 'nullable'

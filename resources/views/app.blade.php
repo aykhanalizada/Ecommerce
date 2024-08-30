@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Handmade Gifts</title>
+    <title>E-commerce</title>
+    <link rel="icon" href="{{asset('favicon.ico')}}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

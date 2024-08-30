@@ -41,7 +41,7 @@
                     <td class=" align-content-center text-center">
 
                         @if($user->media)
-                            <img src="{{  asset('images/users/' . $user->media->file_name  ) }}"
+                            <img src="{{  asset('storage/images/users/' . $user->media->file_name  ) }}"
                                  class="img-thumbnail rounded-circle" style="width:50px;height:50px;" alt="">
                         @else
                             <span><img src="{{asset('images/default-user.webp')}}"

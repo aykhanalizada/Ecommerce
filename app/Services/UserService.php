@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Media;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
@@ -39,8 +40,7 @@ class UserService
         $fileExtension = $file->extension();
         $fileName = $file->hashName();
 
-        $path = public_path('images/users');
-        $file->move($path, $fileName);
+        Storage::disk('public')->putFileAs('images/users', $file, $fileName);
 
         $media = Media::create([
             'file_name' => $fileName,
@@ -93,8 +93,8 @@ class UserService
     {
         if (!$user->fk_id_media == null) {
             $filePath = ('images/users/') . $user->media->file_name;
-            if (file_exists($filePath)) {
-                unlink(public_path('images/users/') . $user->media->file_name);
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
             }
             $user->media()->update(['is_deleted' => 1, 'is_active' => 0]);
             $user->fk_id_media = null;

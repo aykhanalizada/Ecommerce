@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Brand;
 use App\Models\Media;
+use Illuminate\Support\Facades\Storage;
 
 class BrandService
 {
@@ -33,8 +34,8 @@ class BrandService
         $fileExtension = $file->extension();
         $fileName = $file->hashName();
 
-        $path = public_path('images/brands');
-        $file->move($path, $fileName);
+        Storage::disk('public')->putFileAs('images/brands', $file, $fileName);
+
 
         $media = Media::create([
             'file_name' => $fileName,
@@ -70,9 +71,10 @@ class BrandService
     {
         if (!$brand->fk_id_media == null) {
             $filePath = ('images/brands/') . $brand->media->file_name;
-            if (file_exists($filePath)) {
-                unlink(public_path('images/brands/') . $brand->media->file_name);
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
             }
+
             $brand->media()->update(['is_deleted' => 1, 'is_active' => 0]);
             $brand->fk_id_media = null;
         }

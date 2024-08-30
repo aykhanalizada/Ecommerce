@@ -31,7 +31,7 @@
                     <td class=" align-content-center text-center">
 
                         @if($brand->media)
-                            <img src="{{  asset('images/brands/' . $brand->media->file_name  ) }}"
+                            <img src="{{  asset('storage/images/brands/' . $brand->media->file_name  ) }}"
                                  class="img-thumbnail rounded-circle" style="width:50px;height:50px;" alt="">
                         @else
                             <span>No image available</span>

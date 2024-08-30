@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\Product;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProductService
@@ -18,8 +19,7 @@ class ProductService
         $products = Product::notDeleted()
             ->with(['categories', 'relatedProducts'])
             ->paginate(5);
-
-        $allProducts = Product::all(); // select?
+        $allProducts = Product::all();
 
         $categories = Cache::remember('categories', 3600, function () {
             return Category::all();
@@ -112,8 +112,8 @@ class ProductService
         $product->save();
 
 
-        $path = public_path('images/products');
-        $file->move($path, $fileName);
+        Storage::disk('public')->putFileAs('images/products', $file, $fileName);
+
     }
 
     public function updateProduct(
@@ -175,11 +175,12 @@ class ProductService
         foreach ($product->images as $image) {
 
             $filePath = ('images/products/') . $image->file_name;
-            if (file_exists($filePath)) {
-                unlink(public_path('images/products/') . $image->file_name);
-
-                $product->images()->detach();
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
             }
+            $product->images()->delete();
+            DB::table('product_media')->where( 'fk_id_product',$product->id_product )->delete();
+
         }
     }
 

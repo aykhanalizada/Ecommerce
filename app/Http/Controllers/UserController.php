@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $brand = $this->userService->updateUser(
+        $user = $this->userService->updateUser(
             $data['id'],
             $data['firstName'],
             $data['lastName'],
@@ -55,7 +55,7 @@ class UserController extends Controller
             $data['file'] ?? null,
             $data['is_admin'] ?? null
         );
-        if ($brand) {
+        if ($user) {
             return response()->json([
                 'message' => 'Successfully updated'
             ], 200);

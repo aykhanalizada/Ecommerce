@@ -91,7 +91,7 @@
                         @if( isset($product->images))
                             @foreach($product->images as $image)
                                 @if(  $image->pivot->is_main==1)
-                                    <img src="{{  asset('images/products/' . $image->file_name  ) }}"
+                                    <img src="{{  asset('storage/images/products/' . $image->file_name  ) }}"
                                          class="img-thumbnail rounded-circle" style="width:50px;height:50px;"
                                          alt="">
                                 @endif

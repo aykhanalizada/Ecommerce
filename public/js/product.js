@@ -83,7 +83,7 @@ function updateModal(data) {
     if (data.images && data.images.length > 0) {
         data.images.forEach((image, index) => {
 
-            var imgURL = 'images/products/' + image.file_name
+            var imgURL = 'storage/images/products/' + image.file_name
             var imgElement = $('<img>').attr('src', imgURL)
                 .addClass('figure-img img-fluid rounded')
                 .css({'width': '8rem', 'height': '8rem', 'object-fit': 'cover', 'margin': '0.5rem'});

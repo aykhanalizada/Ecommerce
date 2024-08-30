@@ -22,7 +22,7 @@ function editModal(data) {
 
     $("#updateForm").find($('input[name="title"]')).val(data.title)
     $("#updateForm").find($('input[name="id"]')).val(data.id_brand)
-    $("#updateForm #editLogo").attr('src','images/brands/' + data.media.file_name)
+    $("#updateForm #editLogo").attr('src','storage/images/brands/' + data.media.file_name)
 
 }
 
