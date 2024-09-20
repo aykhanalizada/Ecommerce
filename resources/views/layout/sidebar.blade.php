@@ -3,7 +3,7 @@
     <a href="{{route('dashboard')}}" class="brand-link link-offset-3">
         <img src="{{asset('images/logo.webp')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text ">Handmade Gifts</span>
+        <span class="brand-text ">Ecommerce</span>
     </a>
 
     <!-- Sidebar -->
