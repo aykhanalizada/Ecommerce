@@ -34,7 +34,7 @@ $(function() {
             paddingRight: 60
         });
         $this.after($("<div/>", {
-            html: 'Show',
+            html: '<i class="fa-solid fa-eye"></i>',
             class: 'btn btn-primary btn-sm',
             id: 'passeye-toggle-'+i,
         }).css({
@@ -60,18 +60,21 @@ $(function() {
         $this.on("keyup paste", function() {
             $("#passeye-"+i).val($(this).val());
         });
-        $("#passeye-toggle-"+i).on("click", function() {
-            if($this.hasClass("show")) {
+        $("#passeye-toggle-" + i).on("click", function () {
+            if ($this.attr('type') === 'text') {
                 $this.attr('type', 'password');
-                $this.removeClass("show");
-                $(this).removeClass("btn-outline-primary");
-            }else{
+
+                // Change the icon to fa-eye when hiding the password
+                $(this).html('<i class="fa-solid fa-eye"></i>');
+            } else {
                 $this.attr('type', 'text');
-                $this.val($("#passeye-"+i).val());
-                $this.addClass("show");
-                $(this).addClass("btn-outline-primary");
+
+                // Change the icon to fa-eye-slash when showing the password
+                $(this).html('<i class="fa-solid fa-eye-slash"></i>');
             }
         });
+
+
     });
 
     $(".my-login-validation").submit(function() {
