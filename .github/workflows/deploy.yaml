@@ -20,9 +20,29 @@ jobs:
 
       - name: Sync Project Files to Droplet
         run: |
-          rsync -avz --delete ./ ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SERVER_IP }}:/var/www/html/Ecommerce/
+          rsync -avz --delete \
+            --exclude='.env' \
+            --exclude='storage/' \
+            --exclude='vendor/' \
+            ./ ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SERVER_IP }}:/var/www/html/Ecommerce/
         env:
           RSYNC_RSH: "ssh -o StrictHostKeyChecking=no"
+
+      - name: Install Composer Dependencies
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SERVER_IP }} << 'EOF'
+            cd /var/www/html/Ecommerce
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+          EOF
+
+      - name: Clear and Cache Laravel Config
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SERVER_IP }} << 'EOF'
+            cd /var/www/html/Ecommerce
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+          EOF
 
       - name: Restart Apache
         run: |
