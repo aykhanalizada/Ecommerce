@@ -16,11 +16,11 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.SERVER_LARAVEL_UBUNTU }}
+          ssh-private-key: ${{ secrets.DO_SSH_KEY }}
 
       - name: Sync Project Files to Droplet
         run: |
-          rsync -avz --delete ./ your_user@${{ secrets.DO_SERVER_IP }}:/var/www/html/Ecommerce/
+          rsync -avz --delete ./ ${{ secrets.DO_SSH_USER }}@${{ secrets.DO_SERVER_IP }}:/var/www/html/Ecommerce/
         env:
           RSYNC_RSH: "ssh -o StrictHostKeyChecking=no"
 
