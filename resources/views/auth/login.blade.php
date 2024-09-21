@@ -21,7 +21,7 @@
                 </div>
                 <div class="card fat">
                     <div class="card-body">
-                        <h4 class="card-title">Sign In</h4>
+                        <h4 class="card-title">Login</h4>
                         <form method="POST" action="{{route('user-login')}}" class="my-login-validation">
                             @csrf
                             <div class="form-group">
