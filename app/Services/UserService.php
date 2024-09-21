@@ -13,7 +13,8 @@ class UserService
 {
     function getAllUsers()
     {
-        return User::paginate(5);
+        return User::where('is_deleted', 0)
+            ->paginate(5);
     }
 
     public function storeUser(string $firstName, string $lastName, string $username, string $email, string $password, $file, int $isAdmin)
