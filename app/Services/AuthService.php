@@ -26,7 +26,7 @@ class AuthService
             Cookie::queue(Cookie::make('remember_token', $rememberToken, 60 * 24));
         }
 
-        if ($user) {
+        if ($user && $user->is_active && !$user->is_deleted) {
             if (Hash::check($password, $user->password)) {
                 Session::put('userId', $user->id_user);
                 return true;
