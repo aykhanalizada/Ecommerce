@@ -4,15 +4,16 @@ namespace App\Services;
 
 use App\Models\Media;
 use App\Models\User;
+use App\Notifications\WelcomeNewUser;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class UserService
 {
     function getAllUsers()
     {
-        return User::where('is_deleted', 0)
-            ->paginate(5);
+        return User::paginate(5);
     }
 
     public function storeUser(string $firstName, string $lastName, string $username, string $email, string $password, $file, int $isAdmin)
@@ -30,6 +31,8 @@ class UserService
             $this->handleImageUpload($user, $file);
         }
 
+
+        Notification::send($user, new WelcomeNewUser($user));
 
         return $user;
 
