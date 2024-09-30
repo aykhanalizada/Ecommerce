@@ -26,6 +26,7 @@
                 <tr>
 
                     <td>{{ ($categories->currentPage()-1)*$categories->perPage() + $loop->iteration }}</td>
+
                     <td class="text-center align-content-center">{{$category->title}}</td>
                     <td class="text-center align-content-center">
                         <div class="btn-group btn-group-toggle " data-toggle="buttons">
